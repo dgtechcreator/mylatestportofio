@@ -32,7 +32,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="acts">
-            <Button variant="z" href="/resume/Vivek_Pal_Resume.pdf" download="Vivek_Pal_Resume.pdf">
+            <Button variant="z" href="/resume/Default.pdf" download="Default.pdf">
             {nav.resumeLabel}
           </Button>
          <Button variant="y" href="#contact">
