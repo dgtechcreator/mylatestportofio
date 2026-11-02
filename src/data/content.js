@@ -22,6 +22,7 @@ export const defaultContent = {
       { id: 'contact', label: 'Contact' },
     ],
     hireLabel: 'Hire Me',
+    resumeLabel: 'My Resume',
   },
 
   hero: {

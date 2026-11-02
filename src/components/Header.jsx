@@ -32,9 +32,12 @@ export default function Header() {
           ))}
         </nav>
         <div className="acts">
-          <Button variant="y" href="#contact">
-            {nav.hireLabel}
+            <Button variant="z" href="/resume/Vivek_Pal_Resume.pdf" download="Vivek_Pal_Resume.pdf">
+            {nav.resumeLabel}
           </Button>
+         <Button variant="y" href="#contact">
+            {nav.hireLabel}
+          </Button> 
           <button
             type="button"
             className="lgbtn"
