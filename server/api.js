@@ -19,6 +19,7 @@ const COOKIE = 'vp_session';
 const SESSION_SECONDS = 8 * 60 * 60;
 const MAX_CONTENT_BYTES = 300_000;
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
+const MAX_RESUME_BYTES = 5 * 1024 * 1024;
 const MAX_FAILS = 5;
 const LOCK_MS = 15 * 60 * 1000;
 const MIN_PASSWORD = 10;
@@ -155,6 +156,8 @@ function sniffImage(bytes) {
   return null;
 }
 
+const isPdf = (b) => b.length > 8 && b.subarray(0, 5).toString('latin1') === '%PDF-';
+
 const isPlainObject = (v) => v && typeof v === 'object' && !Array.isArray(v);
 
 /* ---------- handler ---------- */
@@ -182,6 +185,23 @@ export async function handleApi(req, store, env = {}) {
           'cache-control': 'public, max-age=31536000, immutable',
           'x-content-type-options': 'nosniff',
           'content-security-policy': "default-src 'none'",
+        },
+      });
+    }
+
+    // The resume is public too (the "My Resume" button downloads it).
+    if (method === 'GET' && path.startsWith('resume/')) {
+      const id = path.slice(7);
+      if (!/^[a-f0-9]{24}$/.test(id)) return fail(404, 'Not found');
+      const bin = await store.getBin(`resume-${id}`);
+      if (!bin) return fail(404, 'Not found');
+      return new Response(bin.data, {
+        headers: {
+          'content-type': 'application/pdf',
+          'content-disposition': 'attachment; filename="Vivek_Pal_Resume.pdf"',
+          'cache-control': 'public, max-age=31536000, immutable',
+          'x-content-type-options': 'nosniff',
+          'content-security-policy': "default-src 'none'; sandbox",
         },
       });
     }
@@ -239,6 +259,16 @@ export async function handleApi(req, store, env = {}) {
       const id = randomBytes(12).toString('hex');
       await store.setBin(`img-${id}`, bytes, type);
       return json({ url: `/api/img/${id}` });
+    }
+
+    if (method === 'POST' && path === 'resume') {
+      const bytes = Buffer.from(await req.arrayBuffer());
+      if (!bytes.length) return fail(400, 'Empty file.');
+      if (bytes.length > MAX_RESUME_BYTES) return fail(413, 'Resume is too large (max 5 MB).');
+      if (!isPdf(bytes)) return fail(415, 'Only PDF files are allowed.');
+      const id = randomBytes(12).toString('hex');
+      await store.setBin(`resume-${id}`, bytes, 'application/pdf');
+      return json({ url: `/api/resume/${id}` });
     }
 
     if (method === 'POST' && path === 'password') {

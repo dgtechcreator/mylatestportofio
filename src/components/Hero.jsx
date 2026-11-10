@@ -91,7 +91,7 @@ export default function Hero() {
         {hero.ghost}
       </span>
       <div className="wrap hg">
-        <div className="ht">
+        <div className="ht" data-plx=".1">
           <span className="eb">{hero.eyebrow}</span>
           <h1 className={go ? 'go' : undefined}>
             <SplitText>
@@ -116,7 +116,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hp" ref={portraitRef}>
+        <div className="hp" ref={portraitRef} data-plx="-.07">
           <div className="sun" />
           <svg className="arc" viewBox="0 0 100 100" aria-hidden="true">
             <path d="M12 62A42 42 0 0 1 40 14" />

@@ -3,7 +3,7 @@ import heroPhoto from '../../assets/vivek-hero-wave.webp';
 import polaroid from '../../assets/vivek-polaroid.jpeg';
 import { useSite } from '../../context/SiteContext';
 import { api } from '../../lib/api';
-import { Check, Color, Field, ImageInput, ItemList, Strings, Text } from './fields';
+import { Check, Color, Field, ImageInput, ItemList, ResumeInput, Strings, Text } from './fields';
 
 const TINTS = [
   ['', 'Yellow (default)'],
@@ -37,6 +37,13 @@ function HeroTab({ c, edit }) {
         <Text label="Your name" value={profile.name} onChange={set('profile', 'name')} />
       </div>
       <Text label="“Hire me” button (top bar)" value={nav.hireLabel} onChange={set('nav', 'hireLabel')} />
+      <Text label="Resume button text (top bar)" value={nav.resumeLabel} onChange={set('nav', 'resumeLabel')} />
+      <ResumeInput
+        label="Resume (PDF)"
+        hint="Visitors download this from the “My Resume” button. Max 5 MB. Remember to Publish after uploading."
+        value={nav.resumeUrl}
+        onChange={set('nav', 'resumeUrl')}
+      />
       <Field label="Menu names" hint="The links always point to their own section.">
         <div className="row2">
           {nav.links.map((link, i) => (

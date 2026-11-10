@@ -30,7 +30,9 @@ export default function Experience() {
         <div className="tl" ref={timeline}>
           {experience.items.map(({ year, title, desc }, i) => (
             <Reveal key={i} className={cn('ti', i < reached && 'on')}>
-              <div className="yr">{year}</div>
+              <div className="yr" data-plx="-.06">
+                {year}
+              </div>
               <div>
                 <h3>{title}</h3>
                 <p>{desc}</p>

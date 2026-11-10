@@ -27,5 +27,6 @@ export const api = {
   logout: () => request('logout', { method: 'POST' }),
   saveContent: (content) => request('content', { method: 'PUT', body: { content } }),
   changePassword: (current, next) => request('password', { method: 'POST', body: { current, next } }),
+  uploadResume: (file) => request('resume', { method: 'POST', raw: file, type: 'application/pdf' }),
   upload: (blob) => request('upload', { method: 'POST', raw: blob, type: blob.type }),
 };

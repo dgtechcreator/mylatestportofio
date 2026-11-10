@@ -139,7 +139,7 @@ footer{border-top:2.5px solid var(--border);padding:34px 0 40px;position:relativ
 .pol:before{content:"";position:absolute;top:-15px;left:50%;width:92px;height:28px;background:rgba(244,180,0,.8);transform:translateX(-50%) rotate(-4deg)}
 .pol img{display:block;width:100%}
 .pol figcaption{font:700 1.5rem var(--h);color:#121212;text-align:center;padding-top:2px}
-#skills{--fg:#f4ecd8;--border:#f4ecd8;--card:#1d1a13;--mut:#b4ab92;--secondary:#a5a5ff;background:#121212;color:#f4ecd8;clip-path:polygon(0 26px,100% 0,100% calc(100% - 26px),0 100%);padding-block:clamp(90px,12vw,160px)}
+#skills{--fg:#f4ecd8;--border:#f4ecd8;--card:#1d1a13;--mut:#b4ab92;--secondary:#a5a5ff;background:rgba(18,18,18,.95);color:#f4ecd8;clip-path:polygon(0 26px,100% 0,100% calc(100% - 26px),0 100%);padding-block:clamp(90px,12vw,160px)}
 #skills .cat{background:rgba(255,255,255,.04)}
 #skills .cat h4{border-color:#121212}
 #contact{--fg:#121212;--border:#121212;--card:#fffaf0;--mut:#4a4430;--secondary:#3a3aa8;background:var(--accent);color:#121212;clip-path:polygon(0 30px,100% 0,100% 100%,0 100%);padding-top:clamp(90px,12vw,150px)}
@@ -225,3 +225,89 @@ html.cur,html.cur *{cursor:none!important}
 @media (min-width:900px){.hg{align-items:center}}
 .pv.has-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pv.has-img:before{z-index:2}
+
+/* v6 — three.js backdrop + layered scroll parallax */
+.gl3d{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;animation:glin 1.4s .9s both}
+@keyframes glin{from{opacity:0}}
+/* --plx (px) is written per element by useParallax(); `translate` is used so it never clashes with transform/reveal animations. */
+[data-plx]:not([data-r]):not(.pc){translate:0 calc(var(--plx,0) * 1px)}
+.pc{top:calc(var(--plx,0) * 1px)}
+.pv.has-img img{scale:1.22}
+.hp .pimg{transition:filter .4s}
+.hp:hover .pimg{filter:drop-shadow(0 22px 30px rgba(0,0,0,.28))}
+
+@media (prefers-reduced-motion:reduce){.gl3d{animation:none}.pc{top:0}}
+
+/* v7 — coding & development flavour */
+.lab:before{content:"// "}
+.eb:after{content:"";width:.55em;height:1.05em;background:var(--accent2);margin-left:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+/* faint source code drifting behind the dark skills section */
+#skills:before,#contact:before{position:absolute;left:3%;top:5%;z-index:0;pointer-events:none;user-select:none;white-space:pre;font:700 clamp(.78rem,1.15vw,1rem)/1.75 Consolas,Menlo,'Courier New',monospace;color:rgba(244,236,216,.07);translate:0 calc((var(--sy,0) - var(--o,1500)) * -.12px)}
+#skills:before{--o:1500;content:'using System;\Ausing Microsoft.AspNetCore.Builder;\A\Anamespace Portfolio;\A\Apublic class Developer\A{\A    public string Name { get; } = "Vivek Pal";\A    public string[] Stack = { "C#", ".NET", "SQL Server", "React" };\A\A    public async Task<Product> Ship(Idea idea)\A    {\A        var api   = await Build(idea);\A        var tests = await Test(api);\A        return tests.Passed ? Deploy(api) : Fix(api);\A    }\A}\A\A// while (alive) { learn(); build(); repeat(); }\Avar app = WebApplication.CreateBuilder(args).Build();\Aapp.MapGet("/hello", () => "world");\Aapp.Run();'}
+#contact:before{--o:3600;color:rgba(18,18,18,.1);content:'$ git add .\A$ git commit -m "let\27 s build something great"\A[main 7f3a9c2] let\27 s build something great\A 12 files changed, 3.0k insertions(+)\A$ git push origin main\AEnumerating objects: 128, done.\ATo github.com:vivek/your-next-idea.git\A   a41c0de..7f3a9c2  main -> main\A\A$ dotnet run\Ainfo: Now listening on: http://localhost:5000\Ainfo: Application started. Press Ctrl+C to shut down.'}
+#skills>.wrap,#contact>.wrap{z-index:1}
+/* experience timeline reads like `git log` */
+.yr:before{display:block;font:700 .72rem/1.4 Consolas,Menlo,'Courier New',monospace;font-style:normal;letter-spacing:.02em;color:var(--secondary);margin-bottom:6px}
+.tl>.ti:nth-child(1) .yr:before{content:"commit 3f9a2c1  (HEAD -> main)"}
+.tl>.ti:nth-child(2) .yr:before{content:"commit b81d07e"}
+.tl>.ti:nth-child(3) .yr:before{content:"commit 5ce4a90"}
+.tl>.ti:nth-child(4) .yr:before{content:"commit e72f1b4"}
+.tl>.ti:nth-child(5) .yr:before{content:"commit 09ad3c8"}
+.tl>.ti:nth-child(n+6) .yr:before{content:"commit c4d8e55"}
+/* project cards get an editor-style line-number gutter on hover */
+.pc .pn{font-family:Consolas,Menlo,'Courier New',monospace}
+.pc .sk:before{content:"</> ";color:var(--secondary)}
+@media (prefers-reduced-motion:reduce){.eb:after{animation:none}}
+
+/* v8 — scroll walker (replaces the native scrollbar on desktop) */
+@media (min-width:601px){html{scrollbar-width:none}html::-webkit-scrollbar{display:none}}
+.sw{--m:60px;position:fixed;right:2px;top:92px;bottom:80px;width:60px;z-index:70}
+.sw-path{position:relative;height:100%;cursor:grab;touch-action:none}
+.sw.drag .sw-path{cursor:grabbing}
+.sw-path:before,.sw-fill{content:"";position:absolute;left:50%;top:0;width:4px;margin-left:-2px;border-radius:2px;background:repeating-linear-gradient(to bottom,var(--c,color-mix(in srgb,var(--fg) 28%,transparent)) 0 6px,transparent 6px 12px)}
+.sw-path:before{height:100%}
+.sw-fill{--c:var(--accent2);height:calc(var(--p,0) * (100% - var(--m)) + var(--m) / 2)}
+.sw-man{position:absolute;left:50%;top:calc(var(--p,0) * (100% - var(--m)));width:var(--m);height:var(--m);margin-left:calc(var(--m) / -2);display:grid;place-items:center;z-index:2;transition:top .12s linear}
+.sw.drag .sw-man{transition:none}
+.sw-man svg{overflow:visible;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.18))}
+/* turn around when the scroll direction flips (two names so the animation restarts) */
+.sw[data-dir=down] .sw-man svg{animation:swt1 .45s}
+.sw[data-dir=up] .sw-man svg{animation:swt2 .45s}
+@keyframes swt1{40%{transform:scaleX(.05)}}
+@keyframes swt2{40%{transform:scaleX(.05)}}
+.sw-man path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sw-man .o{stroke:var(--border);stroke-width:7}
+.leg .i{stroke:var(--accent2);stroke-width:3.4}
+.arm .i{stroke:var(--accent);stroke-width:3.4}
+.sw-man .shoe{fill:#121212}
+.sw-man .shirt{fill:var(--accent);stroke:var(--border);stroke-width:2.5}
+.sw-man .pack{fill:var(--secondary);stroke:var(--border);stroke-width:2.5}
+.sw-man .skin{fill:#ffd9a8;stroke:var(--border);stroke-width:2.5}
+.sw-man .cap{fill:var(--secondary);stroke:var(--border);stroke-width:2.5}
+.sw-man .hair{fill:var(--secondary);stroke:var(--border);stroke-width:2.5}
+.sw-man .brim{stroke:var(--border);stroke-width:3.5}
+.sw-man .eye{fill:#121212}
+.sw-man .smile{stroke:#121212;stroke-width:1.6}
+/* front view while heading down the page, back view (backpack, no face) while heading up */
+.sw[data-dir=down] .pack,.sw[data-dir=down] .hair{display:none}
+.sw[data-dir=up] .skin,.sw[data-dir=up] .cap,.sw[data-dir=up] .brim,.sw[data-dir=up] .face{display:none}
+.leg.l{transform-origin:16.5px 38px}.leg.r{transform-origin:23.5px 38px}
+.arm.l{transform-origin:13px 27px}.arm.r{transform-origin:27px 27px}
+.sw.walking .leg.l{animation:stl .28s ease-in-out infinite alternate}
+.sw.walking .leg.r{animation:stl .28s ease-in-out infinite alternate-reverse}
+.sw.walking .arm.l{animation:asw .28s ease-in-out infinite alternate}
+.sw.walking .arm.r{animation:asw .28s ease-in-out infinite alternate-reverse}
+.sw.walking .torso{animation:bob .14s ease-in-out infinite alternate}
+@keyframes stl{from{transform:translateY(-4px) rotate(0)}to{transform:translateY(1px) rotate(0)}}
+@keyframes asw{from{transform:rotate(-30deg)}to{transform:rotate(30deg)}}
+@keyframes bob{to{transform:translateY(-1.2px)}}
+.sw-pct{position:absolute;right:100%;top:50%;translate:-4px -50%;padding:2px 7px;border:2px solid var(--border);background:var(--accent);color:#121212;font:800 .68rem var(--f);border-radius:6px;box-shadow:2px 2px 0 var(--border);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.sw-pct:before{content:attr(data-pct)}
+.sw.walking .sw-pct,.sw.drag .sw-pct,.sw-path:hover .sw-pct{opacity:1}
+.sw-stop{position:absolute;left:50%;top:calc(var(--m) / 2 + var(--at,0) * (100% - var(--m)));width:14px;height:14px;margin:-7px 0 0 -7px;padding:0;border:2.5px solid var(--border);border-radius:50%;background:var(--card);cursor:pointer;transition:transform .2s,background .2s;z-index:1}
+.sw-stop:hover{transform:scale(1.35);background:var(--accent2)}
+.sw-stop:after{content:attr(data-label);position:absolute;right:calc(100% + 10px);top:50%;translate:0 -50%;padding:2px 8px;border:2px solid var(--border);background:var(--card);color:var(--fg);font:800 .68rem var(--f);letter-spacing:.08em;text-transform:uppercase;border-radius:6px;box-shadow:2px 2px 0 var(--border);opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .2s}
+.sw-stop:hover:after{opacity:1}
+@media (max-width:600px){.sw{display:none}}
+@media (prefers-reduced-motion:reduce){.sw.walking .leg,.sw.walking .arm,.sw.walking .torso{animation:none}.sw-man svg{animation:none!important}}

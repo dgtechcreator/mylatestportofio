@@ -41,7 +41,7 @@ export default function About() {
 
           <div className="abr">
             <Reveal className="ap">
-              <figure className="pol">
+              <figure className="pol" data-plx="-.1">
                 <img src={safeSrc(about.photo) || polaroid} alt={profile.name} />
                 <figcaption>{about.caption}</figcaption>
               </figure>

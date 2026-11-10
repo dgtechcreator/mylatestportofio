@@ -1,7 +1,7 @@
 import { useId, useRef, useState } from 'react';
 import { api } from '../../lib/api';
 import { prepareImage } from '../../lib/image';
-import { safeSrc } from '../../lib/safe';
+import { DEFAULT_RESUME, safeResume, safeSrc } from '../../lib/safe';
 
 export function Field({ label, hint, children }) {
   return (
@@ -161,6 +161,63 @@ export function ImageInput({ label, hint, value, onChange, fallback, removeLabel
               {removeLabel}
             </button>
           )}
+          {error && <small className="fe">{error}</small>}
+        </div>
+      </div>
+    </Field>
+  );
+}
+
+const MAX_RESUME = 5 * 1024 * 1024;
+
+/** PDF picker for the resume: uploads the file and stores the returned link. */
+export function ResumeInput({ label, hint, value, onChange }) {
+  const file = useRef(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [done, setDone] = useState('');
+  const href = safeResume(value);
+  const isCustom = href !== DEFAULT_RESUME;
+
+  const pick = async (e) => {
+    const chosen = e.target.files?.[0];
+    e.target.value = '';
+    if (!chosen) return;
+    setError('');
+    setDone('');
+    if (chosen.type !== 'application/pdf' && !/\.pdf$/i.test(chosen.name)) return setError('Please choose a PDF file.');
+    if (chosen.size > MAX_RESUME) return setError('PDF is too large (max 5 MB).');
+    setBusy(true);
+    try {
+      const { url } = await api.uploadResume(chosen);
+      onChange(url);
+      setDone(`“${chosen.name}” uploaded — press Publish to make it live.`);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Field label={label} hint={hint}>
+      <div className="im">
+        <div className="imp rs">PDF</div>
+        <div className="imb">
+          <span className="fh">{isCustom ? 'Using your uploaded resume.' : 'Using the built-in default resume.'}</span>
+          <input ref={file} type="file" accept="application/pdf,.pdf" hidden onChange={pick} />
+          <button type="button" className="mini wide" disabled={busy} onClick={() => file.current.click()}>
+            {busy ? 'Uploading…' : isCustom ? 'Upload newer resume' : 'Upload latest resume'}
+          </button>
+          <a className="fh" href={href} target="_blank" rel="noreferrer" download="Vivek_Pal_Resume.pdf">
+            Download current resume ↓
+          </a>
+          {isCustom && (
+            <button type="button" className="mini wide danger" onClick={() => onChange('')}>
+              Back to default resume
+            </button>
+          )}
+          {done && <small className="fh">{done}</small>}
           {error && <small className="fe">{error}</small>}
         </div>
       </div>

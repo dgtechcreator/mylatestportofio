@@ -106,3 +106,5 @@ html:has(.adm-overlay) .cd,html:has(.adm-overlay) .cr,html:has(.adm-panel:hover)
 .row2{grid-template-columns:1fr}
 .adm-body{padding-bottom:140px}
 }
+
+.imp.rs{font:900 1.1rem var(--f,sans-serif);letter-spacing:.08em;background:#f4b400;color:#121212}

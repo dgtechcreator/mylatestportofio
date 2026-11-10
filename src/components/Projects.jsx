@@ -35,6 +35,7 @@ function ProjectCard({ project, index, linkLabel }) {
     <Reveal
       as="article"
       className="pc"
+      data-plx={index % 2 ? '-.05' : '.04'}
       style={{ '--r': `${Number(rotate) || 0}deg`, '--rd': staggerDelay(index) }}
       {...(canUseMouseFx && tilt)}
     >
@@ -43,11 +44,11 @@ function ProjectCard({ project, index, linkLabel }) {
       </div>
       <div className={img ? 'pv has-img' : 'pv'} style={tint ? { '--t': tint } : undefined}>
         {img ? (
-          <img src={img} alt={title} loading="lazy" />
+          <img src={img} alt={title} loading="lazy" data-plx="-.05" />
         ) : (
           <>
-            <b>{abbr}</b>
-            <i>{glyph}</i>
+            <b data-plx="-.04">{abbr}</b>
+            <i data-plx="-.09">{glyph}</i>
           </>
         )}
       </div>

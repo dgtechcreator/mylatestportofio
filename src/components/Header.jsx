@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSite } from '../context/SiteContext';
+import { safeResume } from '../lib/safe';
 import { useActiveSection } from '../hooks/useActiveSection';
 import { cn } from '../utils/cn';
 import Button from './ui/Button';
@@ -32,7 +33,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="acts">
-            <Button variant="z" href="/resume/Default.pdf" download="Default.pdf">
+          <Button variant="z" href={safeResume(nav.resumeUrl)} download="Vivek_Pal_Resume.pdf">
             {nav.resumeLabel}
           </Button>
          <Button variant="y" href="#contact">

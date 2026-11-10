@@ -7,7 +7,7 @@ export default function SectionHead({ label, title }) {
   return (
     <Reveal className="sh">
       <span className="lab">{label}</span>
-      <h2 className="big">
+      <h2 className="big" data-plx=".035">
         <SplitText>{title}</SplitText>
       </h2>
       <DrawSvg symbol="ul" viewBox="0 0 300 24" className="u" />
