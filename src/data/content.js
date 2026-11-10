@@ -23,7 +23,7 @@ export const defaultContent = {
     ],
     hireLabel: 'Hire Me',
     resumeLabel: 'My Resume',
-    resumeUrl: '', // uploaded from the admin panel; empty = bundled /resume/Default.pdf
+    resumeUrl: '', // uploaded from the admin panel; empty = bundled /resume/Vivek_Pal_Resume.pdf
   },
 
   hero: {

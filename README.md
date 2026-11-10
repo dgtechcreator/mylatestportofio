@@ -8,7 +8,7 @@ skills, projects and experience can be changed from the browser — no code chan
 - Visitors load the page and the saved content from `/api/content`.
 - After logging in, the **Edit site** drawer changes everything live. **Publish** saves it for everyone.
 - **Resume:** Edit site → *Header & Hero* → *Resume (PDF)* → upload the latest PDF (max 5 MB) → **Publish**. The top-bar
-  "My Resume" button then downloads it (falls back to `public/resume/Default.pdf` until you upload one).
+  "My Resume" button then downloads it (falls back to `public/resume/Vivek_Pal_Resume.pdf` until you upload one).
 - Content + uploaded images and resumes are stored in **Netlify Blobs** (Netlify's built-in file storage — no database to set up).
 - The password is checked **on the server** (`server/api.js`). It is never in the website code, so DevTools can't show it.
 
