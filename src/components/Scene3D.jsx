@@ -25,7 +25,6 @@ import {
   DoubleSide,
   TetrahedronGeometry,
   TorusGeometry,
-  TorusKnotGeometry,
   WebGLRenderer,
 } from 'three';
 import { canUseMouseFx, prefersReducedMotion } from '../utils/media';
@@ -39,7 +38,6 @@ const TAN = Math.tan((FOV / 2) * (Math.PI / 180));
  * `edge` how close to that edge, `z` the depth (further = slower = parallax), `fill` the palette key.
  */
 const SHAPES = [
-  { geo: () => new TorusKnotGeometry(1, 0.34, 120, 14), at: ['.hero', 0.3], side: 1, edge: 0.8, z: -3, size: 1.25, fill: 'accent', spin: [0.1, 0.16] },
   { geo: () => new IcosahedronGeometry(1, 0), at: ['.hero', 1.18], side: -1, edge: 0.85, z: -6, size: 1.6, wire: 'secondary', spin: [0.07, 0.1] },
   { geo: () => new TorusGeometry(1, 0.36, 14, 40), at: ['#about', 0.85], side: -1, edge: 1.0, z: -2, size: 0.95, fill: 'secondary', spin: [0.16, 0.1] },
   { geo: () => new TetrahedronGeometry(1, 0), at: ['#projects', 0.5], side: -1, edge: 0.96, z: -2, size: 1, fill: 'accent', spin: [0.22, 0.14] },
